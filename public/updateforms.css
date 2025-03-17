@@ -1,0 +1,40 @@
+/* Popup Background */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(32, 178, 171, 0.426);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    z-index: 3000;
+  }
+  
+  .popup.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Popup Form */
+  .popup-form {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 500px;
+    
+    overflow: scroll;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    position: relative;
+    transform: translateY(-50px);
+    border: dotted 2pt transparent;
+    animation: ease-in 0.3s forwards;
+    /* color: white; */
+  }
+  

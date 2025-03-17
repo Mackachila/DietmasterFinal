@@ -1,0 +1,319 @@
+<!-- close-deletion-form-floating-card +8g from it is -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DietMaster - Meal Recommendation System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="account2.css">
+    <link rel="stylesheet" href="updateforms.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+
+        /* Input fields and textarea */
+input[type="text"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  /* background-color: #444; */
+  /* color: #f1f1f1; */
+  font-size: 1rem;
+}
+
+textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+/* Button styles */
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #81C784;
+}
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+      <div class="logo-container">
+        <div class="logo">
+          
+            <img src="logo.png" alt="Logo">
+       
+        </div>
+        <div class="company-name">DietMaster</div>
+    </div>
+        <div class="nav-links">
+            <!-- <a href="/schedule" class="active">Schedule</a> -->
+            <a href="/doctor_account">Meal Plans</a>
+            <a href="/doctor_analysis">Analysis</a>
+            <a href="/home#about">About</a>
+            <a href="home#contact">Contact</a>
+        </div>
+        <div class="profile-nav">
+            <div class="profile-image">
+                <span id="navinitials"></span>
+            </div>
+        </div>
+        <div class="hamburger" id="menu-toggle">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </nav>
+
+    <!-- Profile Sidebar Toggle Button -->
+    <div class="profile-toggle" id="profile-toggle">
+        <span>≡</span>
+    </div>
+
+    <!-- Main Container -->
+<!-- recommendation error -->
+
+<div id="recommend-floating-card" class="hidden">
+    <b id="close-card-btn">X</b>
+      <img src="error.png" alt="Error" class="error-image">
+    <p id="recommend-floating-card-message"></p>
+  </div>
+
+  <!-- Loading spinner and overlay configurations -->
+    <div id="loading-overlay" class="loading-overlay">Getting Recommendation. Please wait...
+      <div class="spinner"></div>
+    </div>
+    <div class="container">
+        <!-- Profile Sidebar -->
+        <div class="profile-sidebar" id="profile-sidebar">
+            <div class="profile-header">
+                <div class="profile-pic">
+                    <span id="dpinnitials"></span>
+                </div>
+                
+                <h2 class="profile-name" id="dashboard-heading">Loading...</h2>
+                <p class="profile-email" id="emailContent">Loading...</p>
+                <p class="profile-email" id="contactContent">Loading...</p>
+            </div>
+            
+            <div class="sidebar-links">
+                <div class="sidebar-link active" style="background-color: lightgray; border-radius: 7px;">
+                    <i>📊</i>
+                    <span>Dashboard</span>
+                </div>
+                
+                <div class="sidebar-link">
+                  <i>🍴</i>
+                  <span>Favorites</span>
+                  <div class="section-content" id="favoritemealsContent">
+                      <p>Here are your favorite meals and dietary preferences.</p>
+                  </div>
+              </div>
+              <div class="sidebar-link">
+                  <i>🦠</i>
+                  <span>Alergies</span>
+                  <div class="section-content" id="allergiesContent">
+                      <p>Information about your allergies and food sensitivities.</p>
+                  </div>
+              </div>
+              <div class="sidebar-link">
+                  <i>⚕️</i>
+                  <span>Health Conditions</span>
+                  <div class="section-content" id="healthconditionContent">
+                      <p>Details about your health conditions and special requirements.</p>
+                  </div>
+              </div>
+              <div class="sidebar-link">
+                  <i>🍼</i>
+                  <span>Current Age</span>
+                  <div class="section-content" id="ageContent">
+                      <p>Your current age and age-related dietary recommendations.</p>
+                  </div>
+              </div>
+                
+            </div>
+            <div class="logout-btn"  id="logout">
+                <i>🚪</i>
+                <span>Logout</span>
+            </div>
+        </div>
+
+        <!-- Main All -->
+        <div class="main-content">
+            <h1>Meal Management</h1>
+
+            <!-- Form to add new meal -->
+            <section id="add-meal-section">
+              <h2>Add a New Meal</h2>
+              <form id="meal-form" method="POST">
+                  <label for="meal_name">Meal Name:</label>
+                  <input type="text" id="meal_name" name="meal_name" required placeholder="e.g Mahamri with Tea, Sima with Skuma wiki"><br>
+                
+                  <label for="meal_type">Meal Type:</label>
+                  <select id="meal_type" name="meal_type" required>
+                    <option value="breakfast">Breakfast</option>
+                    <option value="lunch">Lunch</option>
+                    <option value="dinner">Dinner</option>
+                    <option value="supper">Supper</option>
+                  </select><br>
+                
+                  <label for="general_info">General Info:</label>
+                  <textarea id="general_info" name="general_info" required placeholder="e.g Carbohydrates, proteins, vitamins"></textarea><br>
+                
+                  <label for="ingredients">Ingredients (comma-separated):</label>
+                  <textarea id="ingredients" name="ingredients" required pattern="([A-Za-z0-9_]+)(,\s?[A-Za-z0-9_]+)*" title="Ingredients must be comma-separated. Example: 'Rice, Chicken, Beans'" placeholder="e.g Unga_wa_sima, Mnazi, Samaki, Uto"></textarea><br>
+                
+                  <button type="submit">Submit</button>
+                </form>
+                
+            </section>
+          
+            <!-- Form to delete a meal -->
+            <section id="delete-meal-section">
+              <h2>Delete a Meal</h2>
+              <form id="delete-meal-form">
+                <label for="delete-meal-name">Meal Name to Delete:</label>
+                <input type="text" id="delete-meal-name" name="meal_name" required>
+          
+                <button type="submit">Delete Meal</button>
+              </form>
+            </section>
+          
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>DietMaster</h3>
+                    <p>Your personalized meal recommendation system for healthier eating habits and nutritional goals.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Dashboard</a></li>
+                        <li><a href="#">Meal Plans</a></li>
+                        <li><a href="#">Recipes</a></li>
+                        <li><a href="#">Nutrition Facts</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to our newsletter for nutrition tips and updates.</p>
+                    <form class="search-form">
+                        <input type="email" class="search-input" placeholder="Your email">
+                        <button type="submit" class="search-btn">→</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 DietMaster (Mackachila). All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="doctoraccount.js"></script> 
+    <!-- <script src="dashboard.js"></script>  -->
+
+   
+    <script>
+        document.getElementById("meal-form").addEventListener("submit", async (e) => {
+      e.preventDefault(); // Prevent the default form submission
+    
+      const mealName = document.getElementById("meal_name").value;
+      const mealType = document.getElementById("meal_type").value;
+      const generalInfo = document.getElementById("general_info").value;
+      let ingredients = document.getElementById("ingredients").value;
+    
+      // Validate ingredients (allowing underscores and hyphens between words)
+      const ingredientsPattern = /^([A-Za-z0-9_-]+)(,\s?[A-Za-z0-9_-]+)*$/;
+      if (!ingredientsPattern.test(ingredients)) {
+        alert('Ingredients must be comma-separated and can include underscores or hyphens between words. Example: "Rice, Chicken, Passion_Juice".');
+        return; // Prevent form submission if validation fails
+      }
+    
+      // Split ingredients into an array
+      ingredients = ingredients.split(',').map(ingredient => ingredient.trim());
+    
+      // Create the nutrition_info JSON object
+      const nutritionInfo = {
+        general_info: generalInfo,
+        ingredients: ingredients
+      };
+    
+      // Send the data to the server using Fetch API
+      const response = await fetch('/add-meal2', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          meal_name: mealName,
+          meal_type: mealType,
+          nutrition_info: JSON.stringify(nutritionInfo)
+        })
+      });
+    
+      const result = await response.json();
+      if (result.success) {
+        alert('Meal added successfully!');
+      } else {
+        alert('Failed to add meal.');
+      }
+    });
+    
+    
+    
+    document.getElementById("delete-meal-form").addEventListener("submit", async (e) => {
+      e.preventDefault(); // Prevent default form submission
+    
+      const mealName = document.getElementById("delete-meal-name").value;
+    
+      try {
+        const response = await fetch("/delete-meal", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ meal_name: mealName }),
+        });
+    
+        const data = await response.json();
+        if (data.success) {
+          alert("Meal deleted successfully!");
+          document.getElementById("delete-meal-form").reset();
+        } else {
+          alert("Failed to delete meal.");
+        }
+      } catch (err) {
+        console.error("Error deleting meal:", err);
+        alert("Error deleting meal.");
+      }
+    });
+    
+      </script>
+</body>
+</html>

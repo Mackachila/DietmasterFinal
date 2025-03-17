@@ -1,0 +1,759 @@
+<!-- close-deletion-form-floating-card +8g from it is -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DietMaster - Meal Recommendation System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="account2.css">
+    <link rel="stylesheet" href="updateforms.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="logo-container">
+            <div class="logo">
+              
+                <img src="logo.png" alt="Logo">
+           
+            </div>
+            <div class="company-name">DietMaster</div>
+        </div>
+        <div class="nav-links">
+            <a href="/schedule" class="active">Schedule</a>
+            <a href="/add_meal">Add Meal</a>
+            <a href="/analysis">Analysis</a>
+            <a href="/reports">Reports</a>
+            <a href="/home#about">About</a>
+            <a href="home#contact">Contact</a>
+        </div>
+        <div class="profile-nav">
+            <div class="profile-image">
+                <span id="navinitials"></span>
+            </div>
+        </div>
+        <div class="hamburger" id="menu-toggle">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </nav>
+
+    <!-- Profile Sidebar Toggle lunch -->
+    <div class="profile-toggle" id="profile-toggle">
+        <span>≡</span>
+    </div>
+
+    <!-- Main Container -->
+<!-- recommendation error -->
+
+<div id="recommend-floating-card" class="hidden">
+    <b id="close-card-btn">X</b>
+      <img src="error.png" alt="Error" class="error-image">
+    <p id="recommend-floating-card-message"></p>
+  </div>
+
+  <!-- Loading spinner and overlay configurations -->
+    <div id="loading-overlay" class="loading-overlay">Getting Recommendation. Please wait...
+      <div class="spinner"></div>
+    </div>
+    <div class="container">
+        <!-- Profile Sidebar -->
+        <div class="profile-sidebar" id="profile-sidebar">
+            <div class="profile-header">
+                <div class="profile-pic">
+                    <span id="dpinnitials"></span>
+                </div>
+                
+                <h2 class="profile-name" id="dashboard-heading">Loading...</h2>
+                <p class="profile-email" id="emailContent">Loading...</p>
+                <p class="profile-email" id="contactContent">Loading...</p>
+            </div>
+            
+            <div class="sidebar-links">
+                <div class="sidebar-link active" style="background-color: lightgray; border-radius: 7px;">
+                    <i>📊</i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="sidebar-link" id = "tutionpayment">
+                    <i>🍽️</i>
+                    <span>Update Data</span>
+                </div>
+                <div class="sidebar-link">
+                  <i>🍴</i>
+                  <span>Favorites</span>
+                  <div class="section-content" id="favoritemealsContent">
+                      <p>Here are your favorite meals and dietary preferences.</p>
+                  </div>
+              </div>
+              <div class="sidebar-link">
+                  <i>🦠</i>
+                  <span>Alergies</span>
+                  <div class="section-content" id="allergiesContent">
+                      <p>Information about your allergies and food sensitivities.</p>
+                  </div>
+              </div>
+              <div class="sidebar-link">
+                  <i>⚕️</i>
+                  <span>Health Conditions</span>
+                  <div class="section-content" id="healthconditionContent">
+                      <p>Details about your health conditions and special requirements.</p>
+                  </div>
+              </div>
+              <div class="sidebar-link">
+                  <i>🍼</i>
+                  <span>Current Age</span>
+                  <div class="section-content" id="ageContent">
+                      <p>Your current age and age-related dietary recommendations.</p>
+                  </div>
+              </div>
+                <div class="sidebar-link" id="dataclearing">
+                    <i>🚮</i>
+                    <span>Clear Data</span>
+                </div>
+            </div>
+            <div class="logout-btn"  id="logout">
+                <i>🚪</i>
+                <span>Logout</span>
+            </div>
+        </div>
+
+        <!-- Main All -->
+        <div class="main-content">
+          
+          <div id="payment-popup" class="popup hidden">
+            <div class="popup-form">
+              <button class="closse-btn" id="close-payment-form">&times;</button>
+                <h2 class="form-header">Update Child's Details</h2>
+                  <form id="payment-form">
+                  <!-- Allergies -->
+                  <label for="payment_type">Does your child have any allergies?</label>
+                    <select id="payment_type" name="payment_type" required>
+                      <option value="" disabled selected>Select one</option>
+                      <option value="yes">YES</option>
+                      <option value="no">NO</option>
+                    </select>
+                 <div id="alergy_list_section" style="display: none;">
+                    <label for="allergy_list">List the allergies separated with commas (,):</label>
+                      <input type="text" id="allergy_list" placeholder="e.g., red_meat, pork, milk etc" required/>
+                  </div>
+            
+                  <!-- Health Conditions (updated to allow multiple selections) -->
+        <label for="health_conditions">Does your child have any health conditions?</label>
+          <select id="health_conditions" name="health_conditions" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="yes">YES</option>
+            <option value="no">NO</option>
+          </select>
+    
+        <div id="health_list_section" style="display: none;">
+          <label for="health_list">Select health conditions:</label>
+            <div id="health_conditions_list">
+              <div class="health-condition">
+                <input type="checkbox" name="health_condition" value="Obesity" id="condition1">
+                  <label for="condition1">Obesity</label>
+                </div>
+              <div class="health-condition">
+          <input type="checkbox" name="health_condition" value="Sugar" id="condition2">
+            <label for="condition2">Sugar</label>
+              </div>
+                <div class="health-condition">
+                 <input type="checkbox" name="health_condition" value="Diabetes" id="condition3">
+                  <label for="condition3">Diabetes</label>
+              </div>
+          <div class="health-condition">
+            <input type="checkbox" name="health_condition" value="Heart-Disease" id="condition4">
+              <label for="condition4">Heart Disease</label>
+          </div>
+        <div class="health-condition">
+          <input type="checkbox" name="health_condition" value="Asthma" id="condition5">
+            <label for="condition5">Asthma</label>
+        </div>
+        <div class="health-condition">
+          <input type="checkbox" name="health_condition" value="Celiac" id="condition6">
+            <label for="condition6">Celiac</label>
+        </div>
+        <div class="health-condition">
+          <input type="checkbox" name="health_condition" value="Allergy" id="condition7">
+            <label for="condition7">Allergy</label>
+        </div>
+        <div class="health-condition">
+          <input type="checkbox" name="health_condition" value="High-Blood-Pressure" id="condition8">
+            <label for="condition8">High Blood Pressure</label>
+        </div>
+        <div class="health-condition">
+          <input type="checkbox" name="health_condition" value="Cholesterol" id="condition9">
+            <label for="condition9">Cholesterol</label>
+        </div>
+        <div class="health-condition">
+          <input type="checkbox" name="health_condition" value="Thyroid-Disease" id="condition10">
+            <label for="condition10">Thyroid Disease</label>
+        </div>
+      </div>
+    </div>
+            
+      <!-- Favorite Meals -->
+      <label for="payment_mode">Is there your child's favorite meal?</label>
+        <select id="payment_mode" name="payment_mode" required>
+          <option value="" disabled selected>Select one</option>
+          <option value="yes">YES</option>
+          <option value="no">NO</option>
+        </select>
+            
+        <div id="favorite_list_section" style="display: none;">
+          <label for="favorite_list">What are the favorite meals? Separate with commas (,):</label>
+            <input type="text" id="favorite_list" placeholder="e.g., bananas, red-meat, etc" required>
+        </div>
+            <!-- Favorite Meals -->
+        <label for="payment_mode">What is the age of your child?</label>
+          <select id="child_age" name="child_age" required>
+            <option value="" disabled selected>Select age of your cild</option>
+            <option value="Less than 1 Year old">Less than 1 Year old</option>
+            <option value="1 Year old">1 Year old</option>
+            <option value="2 Years old">2 Years old</option>
+            <option value="3 Years old">3 Years old</option>
+            <option value="4 Years old">4 Years old</option>
+            <option value="5 Years old">5 Years old</option>
+        </select><br><br>
+    
+        <button type="submit" class="submitt-btn">Continue</button><br><br>
+         <div id="data-error" class="data-error"></div>
+      </form>
+    </div>
+    </div>
+      
+    <!-- Premeum payment form -->
+    
+    <div id="premium-popup" class="popup">
+      <div class="popup-form">
+        <button class="closse-btn" id="close-premium-form">&times;</button>
+          <h2 class="form-header">Premium Subscription</h2>
+            <form id="premium-form">
+              <label>Select premium type:</label>
+                <select id="premium_type" name="premium_type" required>
+                  <option value="" disabled selected>Select premium type</option>
+                  <option value="Monthly">Monthy Subscription</option>
+                  <option value="Yearly">Yearly Subscription</option>
+                </select>
+         <p id="balance_label" style="color: black; display: none;"><b><span id="balance_amount">0</span></b>.</p>
+        <label>Select Mode of payment:</label>
+          <select id="premium_mode" name="premium_mode" required>
+            <option value="" disabled selected>Mode of payment</option>
+            <option value="M-Pesa">M-Pesa</option>
+            <option value="paypal" disabled>PayPal (Coming Soon)</option>
+          </select>
+          <br><br>
+        <button type="submit" class="submitt-btn">Next</button>
+        </form>
+      </div>
+    </div>
+            <!-- deletion popup clear-->
+    <div id="deletion-popup" class="popup">
+      <div class="popup-form">
+        <button class="closse-btn" id="close-deletion-form">&times;</button>
+          <h2 class="form-header">This will Parmanently delete:</h2>
+            <ol>
+              <li>Your health conditions data</li>
+              <li>Your favorite meals data</li>
+              <li>Your allergies data</li>
+              <li>Your age data</li>
+            </ol>
+        <p style="color: lightseagreen;">Use this feature if you want to entirely update your data or if you want to just delete. You can re-update later</p>
+          <h4 style="color: red;">Are you sure you want to delete?</h4><br>
+            <form id="deletion-form">
+              <button class="submitt-btn" style="background-color: maroon;" id="data-deletion-button">Delete</button><br><br>
+                  Click <b>X</b> on the top right to <b style="color: red;">Cancel</b>
+                  <!-- <button class="submitt-btn" id="canceldata-deletion-button">Cancel</button> -->
+                </form>
+              </div>
+            </div>
+
+          <span style = "font-size: 20px;"><span id="account-time-message">Loading...</span>...<span id="time-message">Loading...</span> </span>
+            <div class="section-title">
+              <button class="filter-btn active">Common Meals</button>
+              <div class="recommend>" style ="background-color: transparent; text-align: center;" >
+              <span style = "font-size: 14px;">What can I eat Today 🤗</span>
+                <div class="filters">
+                    
+                    <button class="filter-btn" id="brakfast_btn">Breakfast</button>
+                    <button class="filter-btn" id="lunch_btn">Lunch</button>
+                    <button class="filter-btn" id="supper_btn">Supper</button>
+                    <!-- <button class="filter-btn" id="Analysis_btn">Analysis</button> -->
+                </div>
+                <span style = "font-size: 14px;">See your past meals under analysis 🙋‍♂️</span>
+              </div>
+            </div>
+            
+            <section id="recommendationresults">
+                <div class="recommendationcontainer">
+                 <b style="color: transparent"> Below is your recomendation for that meal</b><br>
+                       
+                  <div id="recommendations-section" class="recommendations">
+                    <!-- Supper will appear here as animated cards -->
+                  </div>
+                </div>
+              </section>
+       
+           
+            <!-- Summary Cards -->
+                        <!-- Meal Cards -->
+            <div class="meal-cards">
+                <div class="meal-card">
+                    <div class="meal-image">
+                        <img src="supper.jpg" alt="Greek Yogurt Bowl">
+                        <div class="meal-tag">Breakfast</div>
+                    </div>
+                    <div class="meal-content">
+                        <h3 class="meal-title">Greek Yogurt Bowl</h3>
+                        <div class="meal-info">
+                            <div class="meal-info-item">
+                                <span class="label">Calories</span>
+                                <span class="value">320</span>
+                            </div>
+                            <div class="meal-info-item">
+                                <span class="label">Protein</span>
+                                <span class="value">22g</span>
+                            </div>
+                            <div class="meal-info-item">
+                                <span class="label">Carbs</span>
+                                <span class="value">42g</span>
+                            </div>
+                        </div>
+                        <p class="meal-description">Greek yogurt topped with fresh berries, honey, and granola for a protein-packed breakfast.</p>
+                        <div class="meal-actions">
+                            <button class="btn btn-primary">Add to Plan</button>
+                            <button class="btn btn-outline">Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meal-card">
+                    <div class="meal-image">
+                        <img src="swahili1.png" alt="Grilled Chicken Salad">
+                        <div class="meal-tag">Lunch</div>
+                    </div>
+                    <div class="meal-content">
+                        <h3 class="meal-title">Grilled Chicken Salad</h3>
+                        <div class="meal-info">
+                            <div class="meal-info-item">
+                                <span class="label">Calories</span>
+                                <span class="value">425</span>
+                            </div>
+                            <div class="meal-info-item">
+                                <span class="label">Protein</span>
+                                <span class="value">38g</span>
+                            </div>
+                            <div class="meal-info-item">
+                                <span class="label">Carbs</span>
+                                <span class="value">18g</span>
+                            </div>
+                        </div>
+                        <p class="meal-description">Grilled chicken breast over mixed greens with cherry tomatoes, cucumber, and balsamic vinaigrette.</p>
+                        <div class="meal-actions">
+                            <button class="btn btn-primary">Add to Plan</button>
+                            <button class="btn btn-outline">Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meal-card">
+                    <div class="meal-image">
+                        <img src="swahili2.jpeg" alt="Salmon with Quinoa">
+                        <div class="meal-tag">Supper</div>
+                    </div>
+                    <div class="meal-content">
+                        <h3 class="meal-title">Salmon with Quinoa</h3>
+                        <div class="meal-info">
+                            <div class="meal-info-item">
+                                <span class="label">Calories</span>
+                                <span class="value">520</span>
+                            </div>
+                            <div class="meal-info-item">
+                                <span class="label">Protein</span>
+                                <span class="value">42g</span>
+                            </div>
+                            <div class="meal-info-item">
+                                <span class="label">Carbs</span>
+                                <span class="value">35g</span>
+                            </div>
+                        </div>
+                        <p class="meal-description">Baked salmon fillet with lemon herb quinoa and steamed asparagus for a nutrient-rich Supper.</p>
+                        <div class="meal-actions">
+                            <button class="btn btn-primary">Add to Plan</button>
+                            <button class="btn btn-outline">Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meal-card">
+                    <div class="meal-image">
+                        <img src="swahili3.jpeg" alt="Overnight Oats">
+                        <div class="meal-tag">Breakfast</div>
+                    </div>
+                    <div class="meal-content">
+                        <h3 class="meal-title">Overnight Oats</h3>
+                        <div class="meal-info">
+                            <div class="meal-info-item">
+                                <span class="label">Calories</span>
+                                <span class="value">380</span>
+                            </div>
+                            <div class="meal-info-item">
+                                <span class="label">Protein</span>
+                                <span class="value">16g</span>
+                            </div>
+                            <div class="meal-info-item">
+                                <span class="label">Carbs</span>
+                                <span class="value">58g</span>
+                            </div>
+                        </div>
+                        <p class="meal-description">Rolled oats soaked overnight with almond milk, chia seeds, and topped with sliced banana and almond butter.</p>
+                        <div class="meal-actions">
+                            <button class="btn btn-primary">Add to Plan</button>
+                            <button class="btn btn-outline">Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meal-card">
+                    <div class="meal-image">
+                        <img src="lunch.jpg" alt="Turkey Wrap">
+                        <div class="meal-tag">Lunch</div>
+                    </div>
+                    <div class="meal-content">
+                        <h3 class="meal-title">Turkey Wrap</h3>
+                        <div class="meal-info">
+                            <div class="meal-info-item">
+                                <span class="label">Calories</span>
+                                <span class="value">395</span>
+                            </div>
+                            <div class="meal-info-item">
+                                <span class="label">Protein</span>
+                                <span class="value">28g</span>
+                            </div>
+                            <div class="meal-info-item">
+                                <span class="label">Carbs</span>
+                                <span class="value">32g</span>
+                            </div>
+                        </div>
+                        <p class="meal-description">Whole wheat wrap filled with sliced turkey, avocado, lettuce, tomato, and light mayo.</p>
+                        <div class="meal-actions">
+                            <button class="btn btn-primary">Add to Plan</button>
+                            <button class="btn btn-outline">Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meal-card">
+                   
+                    <div class="meal-image">
+                        <img src="breakfast.jpg" alt="Vegetable Stir-Fry">
+                        <div class="meal-tag">Supper</div>
+                    </div>
+                    <div class="meal-content">
+                        <h3 class="meal-title">Vegetable Stir-Fry</h3>
+                        <div class="meal-info">
+                            <div class="meal-info-item">
+                                <span class="label">Calories</span>
+                                <span class="value">410</span>
+                            </div>
+                            <div class="meal-info-item">
+                                <span class="label">Protein</span>
+                                <span class="value">18g</span>
+                            </div>
+                            <div class="meal-info-item">
+                                <span class="label">Carbs</span>
+                                <span class="value">48g</span>
+                            </div>
+                        </div>
+                        <p class="meal-description">Mixed vegetables stir-fried with tofu and served over brown rice with a light soy-ginger sauce.</p>
+                        <div class="meal-actions">
+                            <button class="btn btn-primary">Add to Plan</button>
+                            <button class="btn btn-outline">Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>DietMaster</h3>
+                    <p>Your personalized meal recommendation system for healthier eating habits and nutritional goals.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Dashboard</a></li>
+                        <li><a href="#">Meal Plans</a></li>
+                        <li><a href="#">Recipes</a></li>
+                        <li><a href="#">Nutrition Facts</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to our newsletter for nutrition tips and updates.</p>
+                    <form class="search-form">
+                        <input type="email" class="search-input" placeholder="Your email">
+                        <button type="submit" class="search-btn">→</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 DietMaster (Mackachila). All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="account.js"></script> 
+    <!-- <script src="dashboard.js"></script>  -->
+
+   
+<script>
+let currentChart = null;
+
+// Function to render the nutritional analysis in modern cards with progress bars
+const renderNutritionalAnalysis = (nutritionPercentages) => {
+  // Get the container for all nutrition cards
+  const cardsContainer = document.getElementById("nutritionCardsContainer");
+  
+  // Clear previous cards
+  cardsContainer.innerHTML = "";
+  
+  // Create cards for each nutrient
+  nutritionPercentages.forEach(({ nutrient, percentage, target }) => {
+    // Calculate progress percentage (capped at 100%)
+    const progressPercentage = Math.min(Math.round((percentage / target) * 100), 100);
+    
+    // Determine color based on progress
+    let progressColor = "#4caf50"; // Green for good progress
+    if (progressPercentage < 50) {
+      progressColor = "#f44336"; // Red for low progress
+    } else if (progressPercentage < 75) {
+      progressColor = "#ff9800"; // Orange for medium progress
+    }
+    
+    // Create card element
+    const card = document.createElement("div");
+    card.className = "nutrition-card";
+    card.id = `${nutrient.toLowerCase()}Card`;
+    
+    card.innerHTML = `
+      <div class="card-header">
+        <h3 id="${nutrient.toLowerCase()}Nutrient">${nutrient}</h3>
+      </div>
+      <div class="card-content">
+        <div class="percentage-display">
+          <span id="${nutrient.toLowerCase()}Percentage" class="percentage-value">${percentage}%</span>
+          <span id="${nutrient.toLowerCase()}Target" class="target-value">Target: ${target}%</span>
+        </div>
+        <div class="progress-container">
+          <div class="progress-bar" style="width: ${progressPercentage}%; background-color: ${progressColor}"></div>
+        </div>
+        <div class="progress-label">${progressPercentage}% of target</div>
+      </div>
+    `;
+    
+    // Add card to container
+    cardsContainer.appendChild(card);
+  });
+  
+  // Add CSS if it doesn't exist yet
+  if (!document.getElementById("nutrition-cards-styles")) {
+    const styleElement = document.createElement("style");
+    styleElement.id = "nutrition-cards-styles";
+    styleElement.textContent = `
+      #nutritionCardsContainer {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+      }
+      
+      .nutrition-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      .nutrition-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+      }
+      
+      .card-header {
+        padding: 15px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #eaeaea;
+      }
+      
+      .card-header h3 {
+        margin: 0;
+        font-size: 18px;
+        color: #333;
+      }
+      
+      .card-content {
+        padding: 20px;
+      }
+      
+      .percentage-display {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 15px;
+      }
+      
+      .percentage-value {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+      }
+      
+      .target-value {
+        font-size: 14px;
+        color: #666;
+      }
+      
+      .progress-container {
+        height: 10px;
+        background-color: #e9ecef;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-bottom: 8px;
+      }
+      
+      .progress-bar {
+        height: 100%;
+        border-radius: 5px;
+        transition: width 0.5s ease-out;
+      }
+      
+      .progress-label {
+        font-size: 12px;
+        color: #666;
+        text-align: right;
+      }
+    `;
+    document.head.appendChild(styleElement);
+  }
+};
+
+// Function to fetch and render chart data and nutritional analysis
+const fetchChartData = (endpoint) => {
+  fetch(endpoint)
+    .then(response => response.json())
+    .then(data => {
+      console.log("Fetched data:", data); // Debugging log
+
+      // Handle no data case
+      if (data.noData) {
+        document.getElementById("analysisMessage").style.display = "block";
+        document.getElementById("analysisMessage").innerText = "No data available.";
+        document.getElementById("nutritionCardsContainer").innerHTML = ""; // Clear cards
+        if (currentChart) currentChart.destroy(); // Destroy existing chart
+        return;
+      }
+
+      document.getElementById("analysisMessage").style.display = "none";
+
+      // Render Chart
+      const ctx = document.getElementById("mealChart").getContext("2d");
+      if (currentChart) currentChart.destroy();
+
+      currentChart = new Chart(ctx, {
+        type: 'bar',
+        data: data.chartData,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                color: 'black',
+                font: { size: 12, family: 'Arial' }
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: (tooltipItem) => `${tooltipItem.dataset.label}: ${tooltipItem.raw} meals`
+              }
+            }
+          }
+        }
+      });
+
+      // Render Nutritional Analysis if available
+      if (data.nutritionPercentages) {
+        renderNutritionalAnalysis(data.nutritionPercentages);
+      } else {
+        document.getElementById("nutritionCardsContainer").innerHTML = ""; // Clear cards
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching chart data:", error);
+      document.getElementById("analysisMessage").innerText = "Error loading chart data.";
+      document.getElementById("analysisMessage").style.display = "block";
+      document.getElementById("nutritionCardsContainer").innerHTML = ""; // Clear cards
+    });
+};
+
+// Event listeners for buttons
+document.getElementById("weeklyBtn").addEventListener("click", () => fetchChartData("/analysis/weekly"));
+document.getElementById("monthlyBtn").addEventListener("click", () => fetchChartData("/analysis/monthly"));
+document.getElementById("yearlyBtn").addEventListener("click", () => fetchChartData("/analysis/yearly"));
+
+// Fetch weekly data by default on page load
+fetchChartData("/analysis/weekly");
+</script>
+
+<script>
+ function getMealTimeMessage() {
+            const now = new Date();
+            const hours = now.getHours();
+            let message = "";
+
+            if (hours >= 5 && hours < 12) {
+                message = "Breakfast time😍";
+            } else if (hours >= 12 && hours < 15) {
+                message = "Lunch time😍";
+            } else if (hours >= 15 && hours < 19) {
+                message = "Dinner time😍";
+            } else if (hours >= 19 && hours < 22) {
+                message = "Supper time😍";
+            } else {
+                message = "Sleeping time! Good Night😍";
+            }
+
+            document.getElementById("time-message").textContent = message;
+            const formattedDate = now.toDateString(); // "Sat Feb 01 2025"
+            const formattedTime = now.toLocaleTimeString(); // "19:34:13"
+
+            document.getElementById("account-time-message").textContent = `${formattedDate} ${formattedTime}`;
+        }
+
+        // Run the function initially
+        getMealTimeMessage();
+
+        // Update every second to ensure real-time changes
+        setInterval(getMealTimeMessage, 1000);
+</script>
+</body>
+</html>

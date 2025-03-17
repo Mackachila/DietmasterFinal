@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mermaid Diagram</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+</head>
+<body>
+  <div class="mermaid">
+    stateDiagram-v2
+    direction LR
+    
+    state "Diet Recommendation System" as System {
+        direction LR
+        state "User Authentication" as Auth {
+            Register
+            Login
+            ResetPassword
+        }
+        
+        state "Profile Management" as Profile {
+            UpdateChildDetails
+            ViewDetails
+            ClearUserData
+        }
+        
+        state "Meal Management" as Meal {
+            GetMealRecommendations
+            ScheduleMeals
+            CancelScheduledMeals
+            ViewMealAnalytics
+        }
+        
+        state "Notifications" as Notif {
+            ReceiveReminders
+            ViewAlerts
+        }
+        
+        state "Premium Features" as Premium {
+            SubscribeToPremium
+            MakePayment
+        }
+        
+        state "Admin Functions" as Admin {
+            AddCustomMeals
+            DeleteSystemMeals
+            Givingreports
+            Accessotherusersanalysis
+        }
+    }
+    state "Actors" as Actors {
+    state "Caregiver" as Caregiver
+    state "Parent" as Parent
+    state "Guardian" as Guardian
+    state "Hotel Staff" as Hotel
+    state "Admin (Doctor)" as AdminUser
+    }
+    Caregiver --> Auth
+    Parent --> Auth
+    Guardian --> Auth
+    Hotel --> Auth
+    AdminUser --> Auth
+    
+    Auth --> Profile
+    Auth --> Meal
+    Auth --> Notif
+    Auth --> Premium
+    
+    AdminUser --> Admin
+  </div>
+</body>
+</html>

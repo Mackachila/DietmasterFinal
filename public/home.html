@@ -1,0 +1,1156 @@
+<!-- founded-mother more -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - DietMaster</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #20B2AA;
+            --primary-dark: #188F89;
+            --secondary: #FF7F50;
+            --dark: #333;
+            --light: #F9F9F9;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+        
+        .scrolled {
+            padding: 5px 0;
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin: 0 15px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 1rem;
+            transition: var(--transition);
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        .burger {
+            display: none;
+            cursor: pointer;
+        }
+        
+        .burger div {
+            width: 25px;
+            height: 3px;
+            background-color: var(--dark);
+            margin: 5px;
+            transition: var(--transition);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 90vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/api/placeholder/1200/800') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 70px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards 0.3s;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards 0.6s;
+        }
+        
+        .hero-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            border: 2px solid var(--primary);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards 0.9s;
+        }
+        
+        .hero-btn:hover {
+            background: transparent;
+            color: white;
+        }
+        
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+        }
+
+        /* About Section */
+        .section {
+            padding: 100px 50px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .section-title p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* About Cards */
+        .about-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .about-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            flex: 1;
+            min-width: 300px;
+            max-width: 380px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transform: translateY(50px);
+            opacity: 0;
+        }
+        
+        .about-card.animate {
+            animation: fadeInUp 0.8s forwards;
+        }
+        
+        .about-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .about-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--primary);
+            transition: var(--transition);
+            z-index: -1;
+        }
+        
+        .about-card:hover:before {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), transparent);
+            opacity: 0.1;
+        }
+        
+        .about-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+        
+        .about-card:hover i {
+            color: var(--primary-dark);
+            transform: scale(1.1);
+        }
+        
+        .about-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+        
+        .about-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Mission Vision Section */
+        .mission-vision {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        .mission, .vision {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mission:before, .vision:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, transparent, rgba(32, 178, 170, 0.1));
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+        
+        .mission h3, .vision h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .mission p, .vision p {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* FAQ Section */
+        .faq {
+            background-color: #f5f5f5;
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .faq-question h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .faq-question i {
+            font-size: 1.2rem;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-answer p {
+            padding-bottom: 20px;
+            line-height: 1.6;
+            color: #666;
+        }
+        
+        .faq-item.active .faq-question {
+            background-color: rgba(32, 178, 170, 0.05);
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: linear-gradient(135deg, rgba(32, 178, 170, 0.1), rgba(255, 127, 80, 0.1));
+        }
+        
+        .testimonial-slider {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .testimonial-wrapper {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .testimonial {
+            flex: 0 0 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .testimonial-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .testimonial-content:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50px;
+            width: 30px;
+            height: 30px;
+            background: white;
+            transform: rotate(45deg);
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .testimonial-content p {
+            font-style: italic;
+            line-height: 1.7;
+            color: #555;
+        }
+        
+        .testimonial-content p:before,
+        .testimonial-content p:after {
+            content: '"';
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            margin-left: 30px;
+        }
+        
+        .testimonial-author img {
+            width: 80px;
+            height: 90px;
+            border-radius: 50%;
+            border: 1pt solid #20B2AA;;
+            margin-right: 15px;
+            object-fit: cover;
+            padding: 4px;
+        }
+        
+        .author-info h4 {
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .author-info p {
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .testimonial-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .control-btn {
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 5px;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        
+        .control-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .contact-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .contact-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .contact-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        
+        .contact-card p, .contact-card a {
+            color: #666;
+            line-height: 1.6;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .contact-card a:hover {
+            color: var(--primary);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+            gap: 15px;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            color: var(--dark);
+            font-size: 1.3rem;
+            transition: var(--transition);
+        }
+        
+        .social-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #011112, #033038);
+            color: white;
+            padding: 70px 50px 20px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .footer-col h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--primary);
+        }
+        
+        .footer-col p {
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-col ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-col ul li a i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .footer-col ul li a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-bottom p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1000px) {
+            .nav-container {
+                padding: 15px 30px;
+            }
+            
+            .section {
+                padding: 80px 30px;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                right: 0;
+                top: 70px;
+                background: white;
+                height: 0;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                overflow: hidden;
+                transition: var(--transition);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                height: 300px;
+                padding: 20px 0;
+            }
+            
+            .nav-links li {
+                margin: 10px 0;
+                opacity: 0;
+                transform: translateX(50px);
+                transition: opacity 0.5s ease, transform 0.5s ease;
+            }
+            
+            .nav-links.active li {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            
+            .nav-links li:nth-child(1) {
+                transition-delay: 0.1s;
+            }
+            
+            .nav-links li:nth-child(2) {
+                transition-delay: 0.2s;
+            }
+            
+            .nav-links li:nth-child(3) {
+                transition-delay: 0.3s;
+            }
+            
+            .nav-links li:nth-child(4) {
+                transition-delay: 0.4s;
+            }
+            
+            .nav-links li:nth-child(5) {
+                transition-delay: 0.5s;
+            }
+            
+            .burger {
+                display: block;
+            }
+            
+            .burger.active div:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            
+            .burger.active div:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .burger.active div:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 15px 20px;
+            }
+            
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            
+            .section {
+                padding: 60px 20px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="logo.png" alt="DietMaster Logo">
+                <h1>DietMaster</h1>
+            </div>
+            <ul class="nav-links">
+                <!-- <li><a href="/account">Meal Plans</a></li> -->
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Nourishing Kenya's Future</h1>
+            <p>DietMaster is revolutionizing child nutrition in Kilifi County with Computerised Meal Recommendations that respect local food availability and cultural preferences designed specifically for children 5 years and under.</p>
+            <a href="/login" class="hero-btn">Log in</a>
+            <a href="/register" class="hero-btn">Sign Up</a><br><br>
+            <p>Are you a doctor?</p>
+            <a href="/doctor_login" class="hero-btn" style="background-color: transparent;">Log in here</a>
+            <a href="/doctor_registration" class="hero-btn" style="background-color: transparent;">Sign Up here</a>
+        </div>
+        <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100">
+            <path fill="#ffffff" fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
+        </svg>
+    </section>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <div class="section-title">
+            <h2>About DietMaster</h2>
+            <p>We're on a mission to improve child nutrition and fight malnutrition in Kenya's coastal region through innovative technology.</p>
+        </div>
+
+        <div class="about-cards">
+            <div class="about-card">
+                <i class="fas fa-heart-pulse"></i>
+                <h3>Our Story</h3>
+                <p>Founded in 2025 by Jared Mackachila in Kilifi County, DietMaster was born from a desire to address childhood malnutrition in Kenya's coastal region. After seeing children under 5 struggling with nutritional deficiencies, we created an AI-powered solution that considers local food availability, cultural preferences, and nutritional science.</p>
+            </div>
+            <div class="about-card">
+                <i class="fas fa-brain"></i>
+                <h3>Our Approach</h3>
+                <p>We combine cutting-edge technology with nutritional expertise to create personalized meal plans. Our system analyzes a child's specific needs, local food availability, and cultural preferences to recommend balanced, nutritious meals that support optimal development during these crucial early years.</p>
+            </div>
+            <div class="about-card">
+                <i class="fas fa-people-group"></i>
+                <h3>Our Impact</h3>
+                <p>Since our launch, we've helped over 5,000 families in Kilifi County improve their children's nutrition. Our partnerships with local healthcare providers and community organizations have allowed us to reach even the most remote areas, making proper nutrition accessible to all.</p>
+            </div>
+        </div>
+
+        <div class="mission-vision">
+            <div class="mission">
+                <h3>Our Mission</h3>
+                <p>To combat childhood malnutrition in Kenya through innovative, accessible, and culturally-sensitive nutrition technology that empowers parents to make informed food choices for their children.</p>
+                <p>We believe every child deserves access to proper nutrition during their formative years, regardless of socioeconomic status or geographic location. Through our technology, we aim to make nutritional guidance accessible to all families with young children.</p>
+            </div>
+            <div class="vision">
+                <h3>Our Vision</h3>
+                <p>To create a future where childhood malnutrition is eliminated in Kenya and throughout Africa, with technology serving as a bridge between nutritional science and everyday practical implementation.</p>
+                <p>We envision communities where all children under 5 years receive optimal nutrition for their development, leading to healthier populations, stronger communities, and brighter futures for Kenya's next generation.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section faq" id="faq">
+        <div class="section-title">
+            <h2>Frequently Asked Questions</h2>
+            <p>Common questions about our service and how DietMaster can help your child</p>
+        </div>
+
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>How does DietMaster create personalized meal recommendations?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>DietMaster uses a combination of artificial intelligence and expert nutritional guidelines to analyze your child's age, weight, dietary restrictions, and preferences. We also consider local food availability in Kilifi County to ensure our recommendations are practical and accessible. Our system then generates balanced meal plans that meet all nutritional requirements for optimal development.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Is DietMaster suitable for children with allergies or special dietary needs?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Absolutely! During the initial assessment, we collect detailed information about your child's allergies, intolerances, and any special dietary needs. Our algorithm then carefully excludes problematic foods while ensuring nutritional needs are still met. We also provide alternative suggestions for common allergens found in traditional Kenyan coastal cuisine.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>How often are meal plans updated for growing children?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Children's nutritional needs change rapidly during the first five years of life. We recommend updating your child's profile every three months for children under 2, and every six months for children 2-5 years old. The system will automatically adjust recommendations based on these updates, accounting for developmental stages, growth, and changing nutritional requirements.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Does DietMaster take into account local Kenyan coastal foods?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, this is one of our key strengths! Our database includes a comprehensive collection of foods commonly available in Kilifi County and the wider coastal region. We emphasize local fruits, vegetables, grains, and protein sources that are nutritionally rich and culturally appropriate. Our recommendations incorporate traditional coastal Kenyan ingredients like cassava, coconut, fish, mangoes, and indigenous vegetables.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>How can I access DietMaster if I don't have regular internet access?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>We understand that internet connectivity can be limited in some parts of Kilifi County. That's why we've developed an SMS-based system for families without regular internet access. You can receive simplified weekly meal plans via text message, and our mobile teams regularly visit communities to provide in-person support and printed materials. We also partner with local health centers where you can access our system.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-title">
+        <h2>Success Stories</h2>
+        <p>Hear from families who've experienced positive changes with DietMaster's nutrition guidance</p>
+    </div>
+
+    <div class="testimonial-slider">
+        <div class="testimonial-wrapper">
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>DietMaster transformed my daughter's health completely. At 3 years old, she was underweight and lacked energy. After following their meal plans for just 3 months, she gained healthy weight and her energy levels soared. The recommendations used foods I could easily find at our local market, making it practical for our daily life.</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="user6.png" alt="Testimonial Author">
+                    <div class="author-info">
+                        <h4>Amina Kazungu</h4>
+                        <p>Mother of 2, Malindi</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>As a first-time father, I was anxious about providing proper nutrition for my son. DietMaster's guidance made it easy to understand his nutritional needs and how to meet them using our local foods. The meal variety kept him interested in eating, and the community health worker's support was invaluable when we had questions.</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="user6.png" alt="Testimonial Author">
+                    <div class="author-info">
+                        <h4>James Mwakazi</h4>
+                        <p>Father of 1, Kilifi Town</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>When my twins were diagnosed with mild malnutrition at 18 months, I felt like I had failed as a mother. DietMaster not only provided personalized meal plans but educated me on nutrition basics. Six months later, both children are thriving. I appreciate how the service respects our cultural food practices while improving their nutritional value.</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="user6.png" alt="Testimonial Author">
+                    <div class="author-info">
+                        <h4>Grace Mwandawiro</h4>
+                        <p>Mother of twins, Kaloleni</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="testimonial-controls">
+            <div class="control-btn prev-btn">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <div class="control-btn next-btn">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="section" id="contact">
+    <div class="section-title">
+        <h2>Get In Touch</h2>
+        <p>Have questions about DietMaster? Reach out to us through any of these channels</p>
+    </div>
+
+    <div class="contact-grid">
+        <div class="contact-card">
+            <i class="fas fa-map-marker-alt"></i>
+            <h3>Visit Us</h3>
+            <p>Kilifi Innovation Hub</p>
+            <p>Pwani University Road</p>
+            <p>Kilifi, Kenya</p>
+        </div>
+        <div class="contact-card">
+            <i class="fas fa-phone"></i>
+            <h3>Call Us</h3>
+            <p><a href="tel:+254712345678">+254 704684936</a></p>
+            <p><a href="tel:+254723456789">+254 704684936</a></p>
+            <p>Monday-Friday: 8am-5pm</p>
+        </div>
+        <div class="contact-card">
+            <i class="fas fa-envelope"></i>
+            <h3>Email Us</h3>
+            <p><a href="mailto:info@dietmaster.co.ke">achilajared@gmail.com</a></p>
+            <p><a href="mailto:support@dietmaster.co.ke">dietmaster@gmail.com</a></p>
+            <p>We respond within 24 hours</p>
+        </div>
+    </div>
+
+    <div class="social-links">
+        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h3>About DietMaster</h3>
+            <p>DietMaster is dedicated to improving child nutrition in Kilifi County through Computerised Meal Recommendations that respect local food availability and cultural preferences.</p>
+            <p>Our innovative approach combines technology with nutritional expertise to fight malnutrition in children under 5 years.</p>
+        </div>
+        <div class="footer-col">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                <li><a href="#services"><i class="fas fa-chevron-right"></i> Services</a></li>
+                <li><a href="#faq"><i class="fas fa-chevron-right"></i> FAQ</a></li>
+                <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Our Services</h3>
+            <ul>
+                <li><a href="/account"><i class="fas fa-chevron-right"></i> Personalized Meal Plans</a></li>
+                <li><a href="/account"><i class="fas fa-chevron-right"></i> Nutritional Assessment</a></li>
+                <li><a href="/account"><i class="fas fa-chevron-right"></i> Community Workshops</a></li>
+                <li><a href="/account"><i class="fas fa-chevron-right"></i> Healthcare Provider Training</a></li>
+                <li><a href="/account"><i class="fas fa-chevron-right"></i> Research & Development</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Contact Us</h3>
+            <ul>
+                <li><a href="#"><i class="fas fa-map-marker-alt"></i> Kilifi Innovation Hub, Pwani University Road</a></li>
+                <li><a href="tel:+254712345678"><i class="fas fa-phone"></i> +254 704684936</a></li>
+                <li><a href="mailto:info@dietmaster.co.ke"><i class="fas fa-envelope"></i> achilajared@gmail.com</a></li>
+                <li><a href="#"><i class="fas fa-clock"></i> Monday-Friday: 8am-5pm</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 DietMaster (Mackachila). All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    // Mobile menu toggle
+    const burger = document.querySelector('.burger');
+    const nav = document.querySelector('.nav-links');
+    
+    burger.addEventListener('click', function() {
+        nav.classList.toggle('active');
+        burger.classList.toggle('active');
+    });
+
+    // Close mobile menu when link is clicked
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', function() {
+            nav.classList.remove('active');
+            burger.classList.remove('active');
+        });
+    });
+
+    // Scroll animation for about cards
+    function checkScroll() {
+        const aboutCards = document.querySelectorAll('.about-card');
+        
+        aboutCards.forEach((card, index) => {
+            const cardTop = card.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            
+            if (cardTop < windowHeight - 100) {
+                card.classList.add('animate');
+                card.style.animationDelay = `${index * 0.2}s`;
+            }
+        });
+    }
+
+    // Check on load and scroll
+    window.addEventListener('load', checkScroll);
+    window.addEventListener('scroll', checkScroll);
+
+    // FAQ Accordion
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        
+        question.addEventListener('click', function() {
+            item.classList.toggle('active');
+        });
+    });
+
+    // Testimonial Slider
+    const testimonialWrapper = document.querySelector('.testimonial-wrapper');
+    const testimonials = document.querySelectorAll('.testimonial');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    let currentIndex = 0;
+
+    function moveSlider() {
+        const slideWidth = testimonials[0].clientWidth;
+        testimonialWrapper.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+    }
+
+    nextBtn.addEventListener('click', function() {
+        currentIndex = (currentIndex + 1) % testimonials.length;
+        moveSlider();
+    });
+
+    prevBtn.addEventListener('click', function() {
+        currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+        moveSlider();
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', moveSlider);
+    
+    // Initialize slider
+    moveSlider();
+</script>
+</body>
+</html>

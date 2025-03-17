@@ -1,0 +1,476 @@
+<!-- close-deletion-form-floating-card +8g from it is -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DietMaster - Meal Recommendation System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="account2.css">
+    <link rel="stylesheet" href="updateforms.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+         input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: lightseagreen;
+            box-shadow: 0 0 0 2px rgba(32, 178, 170, 0.2);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: lightseagreen;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        
+        .submit-btn:hover {
+            background-color: #1a9e92;
+        }
+
+        #analysisMessage{
+          background-color: rgb(215, 212, 212);
+          color: lightseagreen;
+          padding: 14px;
+          border-radius: 7px;
+          text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+      <div class="logo-container">
+        <div class="logo">
+          
+            <img src="logo.png" alt="Logo">
+       
+        </div>
+        <div class="company-name">DietMaster</div>
+    </div>
+        <div class="nav-links">
+            <!-- <a href="/schedule" class="active">Schedule</a> -->
+            <a href="/add_meal">Add/ Delete Meal</a>
+            <a href="/doctor_account">Meal Plans</a>
+            <a href="/home#about">About</a>
+            <a href="home#contact">Contact</a>
+        </div>
+        <div class="profile-nav">
+            <div class="profile-image">
+                <span id="navinitials"></span>
+            </div>
+        </div>
+        <div class="hamburger" id="menu-toggle">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </nav>
+
+    <!-- Profile Sidebar Toggle Button -->
+    <div class="profile-toggle" id="profile-toggle">
+        <span>≡</span>
+    </div>
+
+    <!-- Main Container -->
+<!-- recommendation error -->
+
+<div id="recommend-floating-card" class="hidden">
+    <b id="close-card-btn">X</b>
+      <img src="error.png" alt="Error" class="error-image">
+    <p id="recommend-floating-card-message"></p>
+  </div>
+
+  <!-- Loading spinner and overlay configurations -->
+    <div id="loading-overlay" class="loading-overlay">Getting Recommendation. Please wait...
+      <div class="spinner"></div>
+    </div>
+    <div class="container">
+        <!-- Profile Sidebar -->
+        <div class="profile-sidebar" id="profile-sidebar">
+            <div class="profile-header">
+                <div class="profile-pic">
+                    <span id="dpinnitials"></span>
+                </div>
+                
+                <h2 class="profile-name" id="dashboard-heading">Loading...</h2>
+                <p class="profile-email" id="emailContent">Loading...</p>
+                <p class="profile-email" id="contactContent">Loading...</p>
+            </div>
+            
+            <div class="sidebar-links">
+                <div class="sidebar-link active" style="background-color: lightgray; border-radius: 7px;">
+                    <i>📊</i>
+                    <span>Dashboard</span>
+                </div>
+                
+                <div class="sidebar-link">
+                  <i>🍴</i>
+                  <span>Favorites</span>
+                  <div class="section-content" id="favoritemealsContent">
+                      <p>Here are your favorite meals and dietary preferences.</p>
+                  </div>
+              </div>
+              <div class="sidebar-link">
+                  <i>🦠</i>
+                  <span>Alergies</span>
+                  <div class="section-content" id="allergiesContent">
+                      <p>Information about your allergies and food sensitivities.</p>
+                  </div>
+              </div>
+              <div class="sidebar-link">
+                  <i>⚕️</i>
+                  <span>Health Conditions</span>
+                  <div class="section-content" id="healthconditionContent">
+                      <p>Details about your health conditions and special requirements.</p>
+                  </div>
+              </div>
+              <div class="sidebar-link">
+                  <i>🍼</i>
+                  <span>Current Age</span>
+                  <div class="section-content" id="ageContent">
+                      <p>Your current age and age-related dietary recommendations.</p>
+                  </div>
+              </div>
+                
+            </div>
+            <div class="logout-btn"  id="logout">
+                <i>🚪</i>
+                <span>Logout</span>
+            </div>
+        </div>
+
+        <!-- Main All -->
+        <div class="main-content">
+            <div class="section-title">
+                <span>DietMaster Meal intake analysis</span>
+                   </div>
+            
+            <section id="recommendationresults">
+                <div class="recommendationcontainer">
+                 <b style="color: transparent"> Below is your recomendation for that meal</b><br>
+                       
+                  <div id="recommendations-section" class="recommendations">
+                    <!-- Supper will appear here as animated cards -->
+                  </div>
+                </div>
+              </section>
+              <button class="filter-btn active">+ Give a report</button>
+              <!-- <button class="filter-btn" id="supper_btn">+ Give a report</button> -->
+
+              <section id="analysis-section">
+                <h3>Get detailed Meal analysis of a child for upto the past 5 years😊. <input type="email" id="doctor_analysis" placeholder="Enter email of a user to see their analysis"><br><br> <button type="submit" class="submit-btn" id="doctor_analysisbtn">See analysis</button><br><br>          <p id="analysisMessage">Analysis chat will show here</p>
+                </h3><br>
+                <!-- Chart Container -->
+        <div id="chartContainer">
+          <canvas id="mealChart"></canvas>
+        </div>
+        
+        <br>
+        <div>
+          <button id="weeklyBtn" class="chat-btn">DAILY/ WEEKLY</button>
+          <button id="monthlyBtn" class="chat-btn">MONTHLY</button>
+          <button id="yearlyBtn" class="chat-btn">YEARLY</button>
+        </div>
+        <!-- Nutritional Analysis Container (below the chart) -->
+        <div id="nutritionAnalysisContainer">
+          <div id="nutritionAnalysis"></div>
+          
+        </div>
+        
+        <div id="nutritionCardsContainer"></div>        
+            </section>
+           
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>NutriMeal</h3>
+                    <p>Your personalized meal recommendation system for healthier eating habits and nutritional goals.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Dashboard</a></li>
+                        <li><a href="#">Meal Plans</a></li>
+                        <li><a href="#">Recipes</a></li>
+                        <li><a href="#">Nutrition Facts</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to our newsletter for nutrition tips and updates.</p>
+                    <form class="search-form">
+                        <input type="email" class="search-input" placeholder="Your email">
+                        <button type="submit" class="search-btn">→</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 NutriMeal. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="doctoraccount.js"></script> 
+    <!-- <script src="dashboard.js"></script>  -->
+
+<script>
+let currentChart = null;
+
+// Function to render the nutritional analysis in modern cards with progress bars
+const renderNutritionalAnalysis = (nutritionPercentages) => {
+  // Get the container for all nutrition cards
+  const cardsContainer = document.getElementById("nutritionCardsContainer");
+  
+  // Clear previous cards
+  cardsContainer.innerHTML = "";
+  
+  // Create cards for each nutrient
+  nutritionPercentages.forEach(({ nutrient, percentage, target }) => {
+    // Calculate progress percentage (capped at 100%)
+    const progressPercentage = Math.min(Math.round((percentage / target) * 100), 100);
+    
+    // Determine color based on progress
+    let progressColor = "#4caf50"; // Green for good progress
+    if (progressPercentage < 50) {
+      progressColor = "#f44336"; // Red for low progress
+    } else if (progressPercentage < 75) {
+      progressColor = "#ff9800"; // Orange for medium progress
+    }
+    
+    // Create card element
+    const card = document.createElement("div");
+    card.className = "nutrition-card";
+    card.id = `${nutrient.toLowerCase()}Card`;
+    
+    card.innerHTML = `
+      <div class="card-header">
+        <h3 id="${nutrient.toLowerCase()}Nutrient">${nutrient}</h3>
+      </div>
+      <div class="card-content">
+        <div class="percentage-display">
+          <span id="${nutrient.toLowerCase()}Percentage" class="percentage-value">${percentage}%</span>
+          <span id="${nutrient.toLowerCase()}Target" class="target-value">Target: ${target}%</span>
+        </div>
+        <div class="progress-container">
+          <div class="progress-bar" style="width: ${progressPercentage}%; background-color: ${progressColor}"></div>
+        </div>
+        <div class="progress-label">${progressPercentage}% of target</div>
+      </div>
+    `;
+    
+    // Add card to container
+    cardsContainer.appendChild(card);
+  });
+  
+  // Add CSS if it doesn't exist yet
+  if (!document.getElementById("nutrition-cards-styles")) {
+    const styleElement = document.createElement("style");
+    styleElement.id = "nutrition-cards-styles";
+    styleElement.textContent = `
+      #nutritionCardsContainer {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+      }
+      
+      .nutrition-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      .nutrition-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+      }
+      
+      .card-header {
+        padding: 15px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #eaeaea;
+      }
+      
+      .card-header h3 {
+        margin: 0;
+        font-size: 14px;
+        color: #333;
+      }
+      
+      .card-content {
+        padding: 20px;
+      }
+      
+      .percentage-display {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 15px;
+      }
+      
+      .percentage-value {
+        font-size: 15px;
+        font-weight: bold;
+        color: #333;
+      }
+      
+      .target-value {
+        font-size: 14px;
+        color: #666;
+      }
+      
+      .progress-container {
+        height: 10px;
+        background-color: #e9ecef;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-bottom: 8px;
+      }
+      
+      .progress-bar {
+        height: 100%;
+        border-radius: 5px;
+        transition: width 0.5s ease-out;
+      }
+      
+      .progress-label {
+        font-size: 12px;
+        color: #666;
+        text-align: right;
+      }
+    `;
+    document.head.appendChild(styleElement);
+  }
+};
+
+
+// Function to fetch and render chart data and nutritional analysis
+const fetchChartData = (endpoint) => {
+  const email = doctor_analysis.value.trim();
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+  // Get user input
+
+  if (email === "") {
+    document.getElementById("analysisMessage").style.display = "block";
+    document.getElementById("analysisMessage").style.color = "red";
+    document.getElementById("analysisMessage").innerText = `Please fill the email to get analysis`;
+    return;
+  }
+
+  if (!emailRegex.test(email)) {
+    document.getElementById("analysisMessage").style.display = "block";
+    document.getElementById("analysisMessage").style.color = "red";
+    document.getElementById("analysisMessage").innerText = `Please input a valid email address`;
+    return;
+  }
+
+  document.getElementById("analysisMessage").style.color = "lightseagreen";
+  document.getElementById("analysisMessage").style.display = "none";
+  
+  fetch(`${endpoint}?email=${encodeURIComponent(email)}`) // Pass email as query param
+    .then(response => response.json())
+    .then(data => {
+      console.log("Fetched data:", data); // Debugging log
+      let period = "";
+      if (endpoint.includes("weekly")) period = "weekly";
+      else if (endpoint.includes("monthly")) period = "monthly";
+      else if (endpoint.includes("yearly")) period = "yearly";
+      // Handle no data case
+      if (data.noData) {
+        document.getElementById("analysisMessage").style.display = "block";
+        document.getElementById("analysisMessage").style.color = "red";
+        document.getElementById("analysisMessage").innerText = `No ${period} data available for this user. Try checking another period or check the email and try again`;
+        document.getElementById("nutritionCardsContainer").innerHTML = ""; // Clear cards
+        if (currentChart) currentChart.destroy(); // Destroy existing chart
+        return;
+      }
+      document.getElementById("analysisMessage").style.color = "lightseagreen";
+      document.getElementById("analysisMessage").style.display = "none";
+
+      // Render Chart
+      const ctx = document.getElementById("mealChart").getContext("2d");
+      if (currentChart) currentChart.destroy();
+
+      currentChart = new Chart(ctx, {
+        type: 'bar',
+        data: data.chartData,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                color: 'black',
+                font: { size: 12, family: 'Arial' }
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: (tooltipItem) => `${tooltipItem.dataset.label}: ${tooltipItem.raw} meals`
+              }
+            }
+          }
+        }
+      });
+
+      // Render Nutritional Analysis if available
+      if (data.nutritionPercentages) {
+        renderNutritionalAnalysis(data.nutritionPercentages);
+      } else {
+        document.getElementById("nutritionCardsContainer").innerHTML = ""; // Clear cards
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching chart data:", error);
+      document.getElementById("analysisMessage").innerText = "Error loading chart data.";
+      document.getElementById("analysisMessage").style.display = "block";
+      document.getElementById("nutritionCardsContainer").innerHTML = ""; // Clear cards
+    });
+};
+
+// Event listeners for buttons with email input
+document.getElementById("weeklyBtn").addEventListener("click", () => fetchChartData("/doctor_analysis/weekly"));
+document.getElementById("monthlyBtn").addEventListener("click", () => fetchChartData("/doctor_analysis/monthly"));
+document.getElementById("yearlyBtn").addEventListener("click", () => fetchChartData("/doctor_analysis/yearly"));
+
+// Fetch weekly data for the entered email
+doctor_analysisbtn.addEventListener('click', () => {
+  fetchChartData("/doctor_analysis/weekly");
+});
+
+
+</script>
+</body>
+</html>

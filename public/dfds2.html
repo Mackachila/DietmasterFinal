@@ -1,0 +1,76 @@
+<!-- actors -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mermaid Diagram</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+</head>
+<body>
+  <div class="mermaid">
+    stateDiagram-v2
+    direction LR
+    
+    state "Actors" as Actors {
+        direction TB
+        state "Regular Users" as RegUsers {
+            Parent
+            Caregiver
+            Guardian
+            Hospital_Staff
+            Hotel_Staff
+        }
+        
+        Admin_Doctor: Health Practitioner
+    }
+    
+    state "Diet Suggestion System" as System {
+        direction TB
+        
+        state "Authentication" as Auth {
+            Register
+            Login
+            Reset_Password
+            Verify_2FA
+        }
+        
+        state "User Functions" as UserFunctions {
+            Update_Child_Details
+            Modify_Password
+            Clear_User_Data
+            Get_Meal_Recommendations
+            Add_Custom_Meals_for_Personal_Use
+            Schedule_Meals
+            Cancel_Scheduled_Meals
+            View_Meal_Analytics
+            Receive_Notifications
+            Subscribe_to_Premium
+        }
+        
+        state "Admin Only Functions" as AdminFunctions {
+            Add_System_Meals
+            Delete_System_Meals
+        }
+    }
+    
+    RegUsers --> Auth
+    Admin_Doctor --> Auth
+    
+    Auth --> UserFunctions
+    Auth --> AdminFunctions: Admin access only
+    
+    note right of AdminFunctions
+        Only Health Practitioners 
+        (Admin role) can access
+        these functions
+    end note
+    
+    note right of UserFunctions
+        All authenticated users
+        can access these functions
+    end note
+  </div>
+</body>
+</html>
